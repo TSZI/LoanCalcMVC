@@ -1,0 +1,90 @@
+﻿@model LoanCalcMVC.Models.Loan
+
+<div class="container">
+	<h1 class="mb-2">Loan Calculator</h1>
+
+	<div class="row">
+		<div class="col">
+			<form asp-controller="Home" asp-action="App">
+				<div class="form-row">
+					<div class="form-group col-12">
+						<label asp-for="Amount">Loan Amount:</label>
+						<input id="loanAmount" asp-for="Amount" type="number" value="@Model.Amount" class="form-control" min="1000" step="500" />
+					</div>
+					<div class="form-group col-12">
+						<label asp-for="Term">Term:</label>
+						<input id="loanTerm" asp-for="Term" type="number" value="@Model.Term" class="form-control" min="1" />
+					</div>
+					<div class="form-group col-12">
+						<label asp-for="Rate">Rate:</label>
+						<input id="loanRate" asp-for="Rate" type="number" value="@Model.Rate" class="form-control" min="1" step=".5"/>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-cfOrange mt-2 ">Calculate</button>
+			</form>
+		</div>
+		<div class="col">
+			<div id="paymentTitle">
+				<p>Your Monthly Payments</p>
+			</div>
+			<p id="payment">
+				@Model.Payment.ToString("C")
+			</p>
+			<div class="row">
+				<div class="col-6">
+					<label class="text-left">Total Principal</label>
+				</div>
+				<div class="col-6 text-right" id="totalPrincipal">
+					@Model.Amount.ToString("C")
+				</div>
+				<div class="col-6">
+					<label class="text-left">Total Interest</label>
+				</div>
+				<div class="col-6 text-right" id="totalInterest">
+					@Model.TotalInterest.ToString("C")
+				</div>
+				<div class="col-6">
+					<label class="text-left">Total Cost</label>
+				</div>
+				<div class="col-6 text-right" id="totalCost">
+					@Model.TotalCost.ToString("C")
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@if (Model.PaymentList.Count > 0)
+	{
+		<div class="row mt-3">
+			<div class="col table-responsive">
+				<table id="scheduleTable" class="table table-striped table-hover ">
+					<thead id="tableHeader" class="text-light">
+						<tr>
+							<th>Month</th>
+							<th>Payment</th>
+							<th>Principal</th>
+							<th>Interest</th>
+							<th>Total Interest</th>
+							<th>Balance</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in Model.PaymentList)
+						{
+							<tr>
+								<td>@item.Month</td>
+								<td>@item.Payment.ToString("C")</td>
+								<td>@item.MonthlyPrincipal.ToString("C")</td>
+								<td>@item.MonthlyInterest.ToString("C")</td>
+								<td>@item.TotalInterest.ToString("C")</td>
+								<td>@item.Balance.ToString("C")</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	}
+
+
+</div>
